@@ -164,7 +164,7 @@ you'll get a compiler error. We used to require the arguments to support the
 `<<` is supported, it will be called to print the arguments when the assertion
 fails; otherwise googletest will attempt to print them in the best way it can.
 For more details and how to customize the printing of the arguments, see
-gMock [recipe](../../googlemock/docs/CookBook.md#teaching-google-mock-how-to-print-your-values).).
+[documentation](https://github.com/google/googletest/blob/master/googlemock/docs/cook_book.md#teaching-gmock-how-to-print-your-values)
 
 These assertions can work with a user-defined type, but only if you define the
 corresponding comparison operator (e.g. `==`, `<`, etc). Since this is
@@ -193,8 +193,7 @@ objects, you should use `ASSERT_EQ`.
 
 When doing pointer comparisons use `*_EQ(ptr, nullptr)` and `*_NE(ptr, nullptr)`
 instead of `*_EQ(ptr, NULL)` and `*_NE(ptr, NULL)`. This is because `nullptr` is
-typed while `NULL` is not. See [FAQ](faq.md#why-does-googletest-support-expect_eqnull-ptr-and-assert_eqnull-ptr-but-not-expect_nenull-ptr-and-assert_nenull-ptr)
-for more details.
+typed while `NULL` is not. See [FAQ](faq.md)for more details.
 
 If you're working with floating point numbers, you may want to use the floating
 point variations of some of these macros in order to avoid problems caused by
@@ -214,12 +213,18 @@ as `ASSERT_EQ(expected, actual)`, so lots of existing code uses this order. Now
 The assertions in this group compare two **C strings**. If you want to compare
 two `string` objects, use `EXPECT_EQ`, `EXPECT_NE`, and etc instead.
 
-| Fatal assertion                 | Nonfatal assertion              | Verifies                                                 |
-| ------------------------------- | ------------------------------- | -------------------------------------------------------- |
-| `ASSERT_STREQ(str1, str2);`     | `EXPECT_STREQ(str1, str2);`     | the two C strings have the same content                  |
-| `ASSERT_STRNE(str1, str2);`     | `EXPECT_STRNE(str1, str2);`     | the two C strings have different contents                |
-| `ASSERT_STRCASEEQ(str1, str2);` | `EXPECT_STRCASEEQ(str1, str2);` | the two C strings have the same content, ignoring case   |
-| `ASSERT_STRCASENE(str1, str2);` | `EXPECT_STRCASENE(str1, str2);` | the two C strings have different contents, ignoring case |
+| Fatal assertion         | Nonfatal assertion      | Verifies               |
+| ----------------------- | ----------------------- | ---------------------- |
+| `ASSERT_STREQ(str1,     | `EXPECT_STREQ(str1,     | the two C strings have |
+: str2);`                 : str2);`                 : the same content       :
+| `ASSERT_STRNE(str1,     | `EXPECT_STRNE(str1,     | the two C strings have |
+: str2);`                 : str2);`                 : different contents     :
+| `ASSERT_STRCASEEQ(str1, | `EXPECT_STRCASEEQ(str1, | the two C strings have |
+: str2);`                 : str2);`                 : the same content,      :
+:                         :                         : ignoring case          :
+| `ASSERT_STRCASENE(str1, | `EXPECT_STRCASENE(str1, | the two C strings have |
+: str2);`                 : str2);`                 : different contents,    :
+:                         :                         : ignoring case          :
 
 Note that "CASE" in an assertion name means that case is ignored. A `NULL`
 pointer and an empty string are considered *different*.
@@ -265,7 +270,7 @@ For example, let's take a simple integer function:
 int Factorial(int n);  // Returns the factorial of n
 ```
 
-A test case for this function might look like:
+A test suite for this function might look like:
 
 ```c++
 // Tests factorial of 0.
@@ -285,12 +290,12 @@ TEST(FactorialTest, HandlesPositiveInput) {
 googletest groups the test results by test suites, so logically-related tests
 should be in the same test suite; in other words, the first argument to their
 `TEST()` should be the same. In the above example, we have two tests,
-`HandlesZeroInput` and `HandlesPositiveInput`, that belong to the same test suite
-`FactorialTest`.
+`HandlesZeroInput` and `HandlesPositiveInput`, that belong to the same test
+suite `FactorialTest`.
 
 When naming your test suites and tests, you should follow the same convention as
-for [naming functions and
-classes](https://google.github.io/styleguide/cppguide.html#Function_Names).
+for
+[naming functions and classes](https://google.github.io/styleguide/cppguide.html#Function_Names).
 
 **Availability**: Linux, Windows, Mac.
 
@@ -312,21 +317,21 @@ To create a fixture:
 1.  If necessary, write a destructor or `TearDown()` function to release any
     resources you allocated in `SetUp()` . To learn when you should use the
     constructor/destructor and when you should use `SetUp()/TearDown()`, read
-    this [FAQ](faq.md#should-i-use-the-constructordestructor-of-the-test-fixture-or-setupteardown) entry.
+    the [FAQ](faq.md).
 1.  If needed, define subroutines for your tests to share.
 
 When using a fixture, use `TEST_F()` instead of `TEST()` as it allows you to
 access objects and subroutines in the test fixture:
 
 ```c++
-TEST_F(TestSuiteName, TestName) {
+TEST_F(TestFixtureName, TestName) {
   ... test body ...
 }
 ```
 
-Like `TEST()`, the first argument is the test suite name, but for `TEST_F()` this
-must be the name of the test fixture class. You've probably guessed: `_F` is for
-fixture.
+Like `TEST()`, the first argument is the test suite name, but for `TEST_F()`
+this must be the name of the test fixture class. You've probably guessed: `_F`
+is for fixture.
 
 Unfortunately, the C++ macro system does not allow us to create a single macro
 that can handle both types of tests. Using the wrong macro causes a compiler
@@ -411,7 +416,7 @@ The above uses both `ASSERT_*` and `EXPECT_*` assertions. The rule of thumb is
 to use `EXPECT_*` when you want the test to continue to reveal more errors after
 the assertion failure, and use `ASSERT_*` when continuing after failure doesn't
 make sense. For example, the second assertion in the `Dequeue` test is
-=ASSERT_NE(nullptr, n)=, as we need to dereference the pointer `n` later, which
+`ASSERT_NE(nullptr, n)`, as we need to dereference the pointer `n` later, which
 would lead to a segfault when `n` is `NULL`.
 
 When these tests run, the following happens:
@@ -426,7 +431,6 @@ When these tests run, the following happens:
 
 **Availability**: Linux, Windows, Mac.
 
-
 ## Invoking the Tests
 
 `TEST()` and `TEST_F()` implicitly register their tests with googletest. So,
@@ -440,7 +444,7 @@ different test suites, or even different source files.
 
 When invoked, the `RUN_ALL_TESTS()` macro:
 
-1. Saves the state of all googletest flags
+*   Saves the state of all googletest flags
 
 *   Creates a test fixture object for the first test.
 
@@ -452,7 +456,7 @@ When invoked, the `RUN_ALL_TESTS()` macro:
 
 *   Deletes the fixture.
 
-* Restores the state of all googletest flags
+*   Restores the state of all all googletest flags
 
 *   Repeats the above steps for the next test, until all tests have run.
 
@@ -465,15 +469,17 @@ If a fatal failure happens the subsequent steps will be skipped.
 > return the value of `RUN_ALL_TESTS()`.
 >
 > Also, you should call `RUN_ALL_TESTS()` only **once**. Calling it more than
-> once conflicts with some advanced googletest features (e.g. thread-safe [death
-> tests](advanced.md#death-tests)) and thus is not supported.
+> once conflicts with some advanced googletest features (e.g. thread-safe
+> [death tests](advanced.md#death-tests)) and thus is not supported.
 
 **Availability**: Linux, Windows, Mac.
 
 ## Writing the main() Function
 
-Write your own main() function, which should
-return the value of `RUN_ALL_TESTS()`
+Write your own main() function, which should return the value of
+`RUN_ALL_TESTS()`
+
+You can start from this boilerplate:
 
 ```c++
 #include "this/package/foo.h"
@@ -532,7 +538,6 @@ int main(int argc, char **argv) {
 }
 ```
 
-
 The `::testing::InitGoogleTest()` function parses the command line for
 googletest flags, and removes all recognized flags. This allows the user to
 control a test program's behavior via various flags, which we'll cover in
@@ -548,7 +553,6 @@ implementation of main(). If it fits your needs, then just link your test with
 gtest\_main library and you are good to go.
 
 NOTE: `ParseGUnitFlags()` is deprecated in favor of `InitGoogleTest()`.
-
 
 ## Known Limitations
 

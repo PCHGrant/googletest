@@ -1,13 +1,14 @@
 # Advanced googletest Topics
 
+<!-- GOOGLETEST_CM0015 DO NOT DELETE -->
 
 ## Introduction
 
-Now that you have read the [googletest Primer](primer.md) and learned how to write
-tests using googletest, it's time to learn some new tricks. This document will
-show you more assertions as well as how to construct complex failure messages,
-propagate fatal failures, reuse and speed up your test fixtures, and use various
-flags with your tests.
+Now that you have read the [googletest Primer](primer.md) and learned how to
+write tests using googletest, it's time to learn some new tricks. This document
+will show you more assertions as well as how to construct complex failure
+messages, propagate fatal failures, reuse and speed up your test fixtures, and
+use various flags with your tests.
 
 ## More Assertions
 
@@ -103,11 +104,13 @@ If you already have a function or functor that returns `bool` (or a type that
 can be implicitly converted to `bool`), you can use it in a *predicate
 assertion* to get the function arguments printed for free:
 
-| Fatal assertion                    | Nonfatal assertion                 | Verifies                    |
-| ---------------------------------- | ---------------------------------- | --------------------------- |
-| `ASSERT_PRED1(pred1, val1);`       | `EXPECT_PRED1(pred1, val1);`       | `pred1(val1)` is true       |
-| `ASSERT_PRED2(pred2, val1, val2);` | `EXPECT_PRED2(pred2, val1, val2);` | `pred2(val1, val2)` is true |
-| `...`                              | `...`                              | ...                         |
+| Fatal assertion      | Nonfatal assertion   | Verifies                    |
+| -------------------- | -------------------- | --------------------------- |
+| `ASSERT_PRED1(pred1, | `EXPECT_PRED1(pred1, | `pred1(val1)` is true       |
+: val1);`              : val1);`              :                             :
+| `ASSERT_PRED2(pred2, | `EXPECT_PRED2(pred2, | `pred2(val1, val2)` is true |
+: val1, val2);`        : val1, val2);`        :                             :
+| `...`                | `...`                | ...                         |
 
 In the above, `predn` is an `n`-ary predicate function or functor, where `val1`,
 `val2`, ..., and `valn` are its arguments. The assertion succeeds if the
@@ -337,22 +340,23 @@ want to learn more, see
 
 #### Floating-Point Macros
 
-| Fatal assertion                 | Nonfatal assertion             | Verifies                                 |
-| ------------------------------- | ------------------------------ | ---------------------------------------- |
-| `ASSERT_FLOAT_EQ(val1, val2);`  | `EXPECT_FLOAT_EQ(val1,val2);`  | the two `float` values are almost equal  |
-| `ASSERT_DOUBLE_EQ(val1, val2);` | `EXPECT_DOUBLE_EQ(val1, val2);`| the two `double` values are almost equal |
+| Fatal assertion         | Nonfatal assertion      | Verifies                |
+| ----------------------- | ----------------------- | ----------------------- |
+| `ASSERT_FLOAT_EQ(val1,  | `EXPECT_FLOAT_EQ(val1,  | the two `float` values  |
+: val2);`                 : val2);`                 : are almost equal        :
+| `ASSERT_DOUBLE_EQ(val1, | `EXPECT_DOUBLE_EQ(val1, | the two `double` values |
+: val2);`                 : val2);`                 : are almost equal        :
 
 By "almost equal" we mean the values are within 4 ULP's from each other.
 
-NOTE: `CHECK_DOUBLE_EQ()` in `base/logging.h` uses a fixed absolute error bound,
-so its result may differ from that of the googletest macros. That macro is
-unsafe and has been deprecated. Please don't use it any more.
-
 The following assertions allow you to choose the acceptable error bound:
 
-| Fatal assertion                       | Nonfatal assertion                    | Verifies                  |
-| ------------------------------------- | ------------------------------------- | ------------------------- |
-| `ASSERT_NEAR(val1, val2, abs_error);` | `EXPECT_NEAR(val1, val2, abs_error);` | the difference between `val1` and `val2` doesn't exceed the given absolute error |
+| Fatal assertion    | Nonfatal assertion       | Verifies                  |
+| ------------------ | ------------------------ | ------------------------- |
+| `ASSERT_NEAR(val1, | `EXPECT_NEAR(val1, val2, | the difference between    |
+: val2, abs_error);` : abs_error);`             : `val1` and `val2` doesn't :
+:                    :                          : exceed the given absolute :
+:                    :                          : error                     :
 
 **Availability**: Linux, Windows, Mac.
 
@@ -394,14 +398,14 @@ using ::testing::StartsWith;
     EXPECT_THAT(Foo(), StartsWith("Hello"));
 ```
 
-Read this [recipe](../../googlemock/docs/CookBook.md#using-matchers-in-google-test-assertions) in
+Read this [recipe](../../googlemock/docs/cook_book.md#using-matchers-in-google-test-assertions) in
 the gMock Cookbook for more details.
 
 gMock has a rich set of matchers. You can do many things googletest cannot do
 alone with them. For a list of matchers gMock provides, read
-[this](../../googlemock/docs/CookBook.md#using-matchers). Especially useful among them are
+[this](../../googlemock/docs/cook_book.md#using-matchers). Especially useful among them are
 some [protocol buffer matchers](https://github.com/google/nucleus/blob/master/nucleus/testing/protocol-buffer-matchers.h). It's easy to write
-your [own matchers](../../googlemock/docs/CookBook.md#writing-new-matchers-quickly) too.
+your [own matchers](../../googlemock/docs/cook_book.md#writing-new-matchers-quickly) too.
 
 For example, you can use gMock's
 [EqualsProto](https://github.com/google/nucleus/blob/master/nucleus/testing/protocol-buffer-matchers.h)
@@ -1398,7 +1402,7 @@ namespace:
 
 For more details, see the comments at the definitions of these functions.
 
-NOTE: The `INSTANTIATE_TEST_SUITE_P` keyword is recommended (addressing http://go/gh/google/googletest/issues/1085)  For 1.8.1 and previous releases the keyword is `INSTANTIATE_TEST_CASE_P`. which has been deprecated in favor of INSTANTIATE_TEST_SUITE_P.
+NOTE: The `INSTANTIATE_TEST_SUITE_P` keyword is recommended (addressing https://github.com/google/googletest/issues/1085)  For 1.8.1 and previous releases the keyword is `INSTANTIATE_TEST_CASE_P`. which has been deprecated in favor of INSTANTIATE_TEST_SUITE_P.
 
 The following statement will instantiate tests from the `FooTest` test suite each
 with parameter values `"meeny"`, `"miny"`, and `"moe"`.
